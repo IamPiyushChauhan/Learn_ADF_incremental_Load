@@ -1,0 +1,9 @@
+{
+	"name": "DataFactoryAvd100",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "4d46121c-3171-45d3-8b3a-c5bdd89871d6",
+		"tenantId": "291f8dab-8ffc-41dd-a02d-2d4d18bba7d8"
+	}
+}
