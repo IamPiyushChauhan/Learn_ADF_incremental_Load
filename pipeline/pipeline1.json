@@ -17,7 +17,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT * FROM customer where updated_at > (select last_updated from watermarktracker where table_name = 'customer')",
+						"sqlReaderQuery": {
+							"value": "SELECT * FROM @{pipeline().parameters.table_name} where updated_at > (select last_updated from watermarktracker where table_name = '@{pipeline().parameters.table_name}')",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -31,6 +34,12 @@
 				]
 			}
 		],
+		"parameters": {
+			"table_name": {
+				"type": "string",
+				"defaultValue": "customer"
+			}
+		},
 		"annotations": []
 	}
 }
