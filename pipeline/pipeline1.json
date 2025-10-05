@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT * FROM customer where updated_at > (select last_updated from watermarktracker)",
+						"sqlReaderQuery": "SELECT * FROM customer where updated_at > (select last_updated from watermarktracker where table_name = 'customer')",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
