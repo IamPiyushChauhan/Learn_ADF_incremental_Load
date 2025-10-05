@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
+				"name": "Copydata",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -28,7 +28,10 @@
 						"type": "AzureSqlSink",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
-							"useTempDB": true
+							"useTempDB": true,
+							"keys": [
+								"id"
+							]
 						},
 						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
@@ -61,7 +64,7 @@
 				"type": "IfCondition",
 				"dependsOn": [
 					{
-						"activity": "Copy data1",
+						"activity": "Copydata",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -70,7 +73,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@greater(activity('Copy data1').output.rowsCopied, 0 )",
+						"value": "@greater(activity('Copydata').output.rowsCopied, 0)",
 						"type": "Expression"
 					},
 					"ifTrueActivities": [
@@ -90,7 +93,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "activity('Copy data1').outputselect max(updated_at) from @{pipeline().parameters.table_name};",
+										"value": "select max(updated_at) as max_updated_at from @{pipeline().parameters.table_name};",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -132,7 +135,7 @@
 									},
 									"last_updated": {
 										"value": {
-											"value": "@activity('Lookup1').output.firstRow.updated_at",
+											"value": "@activity('Lookup1').output.firstRow.max_updated_at",
 											"type": "Expression"
 										}
 									}
